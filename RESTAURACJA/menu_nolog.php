@@ -1,0 +1,236 @@
+<?php
+    session_start();
+
+    if(isset($_SESSION['zalogowany']))
+    {
+        header('Location: menu.php');
+        exit();
+    }
+
+?>
+
+<!DOCTYPE HTML>
+<html lang="pl">
+<head>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<link rel="stylesheet" href="style.css" type="text/css" />
+    <title>RESTAURACJA VINOSTEK - Menu</title>
+</head>
+
+    <div id="container">
+        <div class="menu">
+            <div class="dropdown">
+                <a href="http://localhost/RESTAURACJA/menu_nolog.php">Menu</a>
+                <ul>
+                    <li><a href="menu_nolog.php#appetizer">Przystawki</a></li>
+                    <li><a href="menu_nolog.php#steaks">Steki</a></li>
+                    <li><a href="menu_nolog.php#wine">Wino</a></li>
+                </ul>
+                <a href="opinie_nolog.php">Opinie</a>
+                <a href="kontakt_nolog.php">Kontakt</a>
+            </div>
+            <a id="a_register" href="rejestracja.php">Zarejestruj się!</a>
+        </div>
+        <div id="logo">
+            <a href="http://localhost/RESTAURACJA/index.php"><img src="graphic/logo.png" alt="Logo - WinoStek" width="200" height="100"></a>
+        </div>
+        <div id="top"></div>
+        <div id="menu">
+
+            <div id="left_min"></div>
+            <div id="center_menu">
+                <div id="header">
+                    <a id="appetizer">Przystawki:</a>
+                </div>
+                <div id="padding">
+                <?php
+                    require_once "connect.php";
+                    mysqli_report(MYSQLI_REPORT_STRICT);
+                    $connected = new mysqli($host, $db_user, $db_password, $db_name);
+                    if($connected->connect_errno!=0)
+                    {
+                        throw new Exception(mysqli_connect_errno());
+                    }
+                    else
+                    {
+                        $result = $connected->query("SELECT name, price, picture FROM products WHERE category='przystawka'");
+                        if (!$result) throw new Exception($connected->error);
+                        $how_many = $result->num_rows;
+                        $product = mysqli_fetch_all($result,MYSQLI_ASSOC);
+                        for($i=0; $i<$how_many; $i++)
+                        {
+                            echo
+                            '
+                        <div id="left_frame"></div>
+                        <div id="frame">
+                            <a href="index.php">
+                            <div id="block">
+                                    <img id="image" src=
+                                    ';
+
+                                    print($product[$i]["picture"]);
+                                    echo
+                                    '      
+                                     alt="" width="200" height="200">
+                                <div id="description">
+                                <br/><br/>
+                                    <div id="description_name">
+                                        ';
+                                        print($product[$i]["name"]);
+                                        echo'
+                                    </div>
+                                    <br/>
+                                    <div id="description_price">
+                                        ';
+                                        print($product[$i]["price"]);
+                                        echo
+                                        'zł
+                                    </div>
+                                    <div id="description_add_to_cart">
+                                        <br/><br/>+ dodaj do koszyka
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+                        <div id="right_frame"></div>
+                            ';
+                        }
+                        mysqli_free_result($result);
+                        $connected->close();
+                    }
+                ?>
+                </div>
+                <div id="header">
+                    <a id="steaks">Steki:</a>
+                </div>
+                <div id="padding">
+                    <?php
+                    require_once "connect.php";
+                    mysqli_report(MYSQLI_REPORT_STRICT);
+                    $connected = new mysqli($host, $db_user, $db_password, $db_name);
+                    if($connected->connect_errno!=0)
+                    {
+                        throw new Exception(mysqli_connect_errno());
+                    }
+                    else
+                    {
+                        $result = $connected->query("SELECT * FROM products WHERE category='stek'");
+                        if (!$result) throw new Exception($connected->error);
+                        $how_many = $result->num_rows;
+                        $product = mysqli_fetch_all($result,MYSQLI_ASSOC);
+                        for($i=0; $i<$how_many; $i++)
+                        {
+                            echo
+                            '
+                        <div id="left_frame"></div>
+                        <div id="frame">
+                            <a href="index.php">
+                            <div id="block">
+                                    <img id="image" src=
+                                    ';
+                            print($product[$i]["picture"]);
+                            echo
+                            '      
+                                     alt="" width="200" height="200">';
+                                echo'
+                                <div id="description">
+                                <br/><br/>
+                                    <div id="description_name">
+                                        ';
+                                print($product[$i]["name"]);
+                                echo'
+                                    </div>
+                                    <br/>
+                                    <div id="description_price">
+                                        ';
+                                print($product[$i]["price"]);
+                                echo("zł");
+                            echo
+                            '
+                                    </div>
+                                    <div id="description_add_to_cart">
+                                        <br/><br/>+dodaj do koszyka
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+                        <div id="right_frame"></div>
+                            ';
+                        }
+                        mysqli_free_result($result);
+                        $connected->close();
+                    }
+                    ?>
+                </div>
+
+                <div id="header">
+                    <a id="wine">Wino:</a>
+                </div>
+                <div id="padding">
+                    <?php
+                    require_once "connect.php";
+                    mysqli_report(MYSQLI_REPORT_STRICT);
+                    $connected = new mysqli($host, $db_user, $db_password, $db_name);
+                    if($connected->connect_errno!=0)
+                    {
+                        throw new Exception(mysqli_connect_errno());
+                    }
+                    else
+                    {
+                        $result = $connected->query("SELECT name, price, picture FROM products WHERE category='wino'");
+                        if (!$result) throw new Exception($connected->error);
+                        $how_many = $result->num_rows;
+                        $product = mysqli_fetch_all($result,MYSQLI_ASSOC);
+                        for($i=0; $i<$how_many; $i++)
+                        {
+                            echo
+                            '
+                        <div id="left_frame"></div>
+                        <div id="frame">
+                            <a href="index.php">
+                            <div id="block">
+                                    <img id="image" src=
+                                    ';
+                            print($product[$i]["picture"]);
+                            echo
+                            '      
+                                     alt="" width="200" height="200">
+                                <div id="description">
+                                <br/><br/>
+                                    <div id="description_name">
+                                        ';
+
+                            print($product[$i]["name"]);
+                            echo'
+                                    </div>
+                                    <br/>
+                                    <div id="description_price">
+                                        ';
+                            print($product[$i]["price"]);
+                            echo
+                            'zł
+                                    </div>
+                                    <div id="description_add_to_cart">
+                                        <br/><br/>+ dodaj do koszyka
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+                        <div id="right_frame"></div>
+                            ';
+                        }
+                        mysqli_free_result($result);
+                        $connected->close();
+                    }
+                    ?>
+                </div>
+            </div>
+            <div id="right_min"></div>
+        </div>
+    </div>
+</body>
+</html>
